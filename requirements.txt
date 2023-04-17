@@ -1,4 +1,5 @@
-numpy
+sktime
+pmdarima
 pandas
 matplotlib
 seaborn
