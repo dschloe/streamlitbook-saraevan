@@ -11,3 +11,4 @@ lightgbm
 prophet
 statsmodels
 jupyterlab
+streamlit
