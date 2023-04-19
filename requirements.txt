@@ -10,5 +10,5 @@ yfinance
 lightgbm
 prophet
 statsmodels
-jupyterlab
 streamlit
+jupyterlab
