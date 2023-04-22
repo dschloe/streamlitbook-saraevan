@@ -11,4 +11,6 @@ lightgbm
 prophet
 statsmodels
 streamlit
+geopandas
+folium
 jupyterlab
