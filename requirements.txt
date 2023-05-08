@@ -13,4 +13,5 @@ statsmodels
 streamlit
 geopandas
 folium
+xmltodict
 jupyterlab
