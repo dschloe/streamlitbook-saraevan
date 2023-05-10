@@ -1,11 +1,8 @@
 # -*- coding:utf-8 -*-
-import sys
-sys.path.append("..")
-
 import streamlit as st
-from utils import load_data
 import pandas as pd
 from streamlit_option_menu import option_menu
+from eda.viz import showViz
 
 def home():
     st.markdown("## Visualization 개요 \n")
@@ -14,8 +11,7 @@ def home():
 
     st.markdown("## Prediction 개요 \n")
 
-def run_eda():
-    total_df = load_data()
+def run_eda(total_df):
     total_df['DEAL_YMD'] = pd.to_datetime(total_df['DEAL_YMD'], format="%Y-%m-%d")
     st.markdown("## 탐색적 자료 분석 개요 \n"
                 "탐색적 자료분석 페이지입니다."
@@ -37,7 +33,7 @@ def run_eda():
     if selected == 'Home':
         home()
     elif selected == 'Visualization':
-        pass
+        showViz(total_df)
     elif selected == 'Statistics':
         pass
     elif selected == 'Prediction':
