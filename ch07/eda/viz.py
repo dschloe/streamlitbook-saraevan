@@ -105,14 +105,49 @@ def cntChart(total_df, sgg_nm):
     st.plotly_chart(fig)
 
 
+def barChart(total_df):
+    st.markdown("### 지역별 평균 가격 막대 그래프")
+    month_selected = st.selectbox("월을 선택하세요.", [3, 4])
+    house_selected = st.selectbox("가구 유형을 선택하세요", total_df['HOUSE_TYPE'].unique())
+    total_df['month'] = total_df['DEAL_YMD'].dt.month
+    result = total_df[(total_df['month'] == month_selected) & (total_df['HOUSE_TYPE'] == house_selected)]
+    bar_df = result.groupby('SGG_NM')['OBJ_AMT'].agg('mean').reset_index()
+
+    df_sorted = bar_df.sort_values('OBJ_AMT', ascending=False)
+
+    # Create the bar chart using Plotly Express
+    fig = px.bar(df_sorted, x='SGG_NM', y='OBJ_AMT')
+
+    # Update layout
+    fig.update_yaxes(tickformat=".0f",
+                     title_text="물건가격(만원)",
+                     range=[0, df_sorted['OBJ_AMT'].max()])
+    fig.update_layout(title='Bar Chart - Ascending Order',
+                      xaxis_title='지역구명',
+                      yaxis_title='평균가격(만원)')
+    st.plotly_chart(fig)
+
+    st.markdown("<hr>", unsafe_allow_html=True)
+    st.markdown("### 지역별 거래건수 막대 그래프")
+    cnt_df = result.groupby(['SGG_NM', 'HOUSE_TYPE'])['OBJ_AMT'].count().reset_index().rename(columns = {'OBJ_AMT' : '거래건수'})
+    cnt_df = cnt_df.sort_values('거래건수', ascending=False)
+    fig = px.bar(cnt_df, x='SGG_NM', y='거래건수')
+    fig.update_layout(title='Bar Chart - Ascending Order',
+                      xaxis_title='지역구명',
+                      yaxis_title='거래건수')
+    st.plotly_chart(fig)
+
+
 def showViz(total_df):
     total_df['DEAL_YMD'] = pd.to_datetime(total_df['DEAL_YMD'], format="%Y-%m-%d")
     sgg_nm = st.sidebar.selectbox("자치구명", sorted(total_df['SGG_NM'].unique()))
-    selected = st.sidebar.radio("차트 메뉴", ['가구당 평균 가격 추세', '가구당 거래 건수'])
+    selected = st.sidebar.radio("차트 메뉴", ['가구당 평균 가격 추세', '가구당 거래 건수', '지역별 평균 가격 막대 그래프'])
     if selected == "가구당 평균 가격 추세":
         meanChart(total_df, sgg_nm)
     elif selected == "가구당 거래 건수":
         cntChart(total_df, sgg_nm)
+    elif selected == "지역별 평균 가격 막대 그래프":
+        barChart(total_df)
     else:
         st.warning("Error")
 
