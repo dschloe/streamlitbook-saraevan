@@ -5,11 +5,14 @@ from streamlit_option_menu import option_menu
 from eda.viz import showViz
 
 def home():
-    st.markdown("## Visualization 개요 \n")
+    st.markdown("### Visualization 개요 \n"
+                "- 가구당 평균 가격 추세 \n"
+                "- 가구당 거래 건수 추세 \n"
+                "- 지역별 평균 가격 막대 그래프 \n")
 
-    st.markdown("## Statistics 개요 \n")
+    st.markdown("### Statistics 개요 \n")
 
-    st.markdown("## Prediction 개요 \n")
+    st.markdown("### Map 개요 \n")
 
 def run_eda(total_df):
     total_df['DEAL_YMD'] = pd.to_datetime(total_df['DEAL_YMD'], format="%Y-%m-%d")
@@ -18,8 +21,8 @@ def run_eda(total_df):
                 "여기에 독자가 넣고 싶은 추가 내용을 더 넣을 수 있습니다. 👇👇👇"
                 )
 
-    selected = option_menu(None, ["Home", "Visualization", "Statistics", "Prediction"],
-                                icons=['house', 'bar-chart', "file-spreadsheet", 'graph-up-arrow'],
+    selected = option_menu(None, ["Home", "Visualization", "Statistics", "Map"],
+                                icons=['house', 'bar-chart', "file-spreadsheet", 'map'],
                                 menu_icon="cast", default_index=0, orientation="horizontal",
                                 styles={
                                     "container": {"padding": "0!important", "background-color": "#fafafa"},
@@ -36,7 +39,7 @@ def run_eda(total_df):
         showViz(total_df)
     elif selected == 'Statistics':
         pass
-    elif selected == 'Prediction':
+    elif selected == 'Map':
         pass
     else:
         st.warning("Wrong")
