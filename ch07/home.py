@@ -25,14 +25,14 @@ def run_home():
     col1, col2 = st.columns(2)
     filtered_month = total_df[total_df['month'] == month_dict[selected_month]]
     filtered_month = filtered_month[filtered_month['SGG_NM'] == sgg_nm]
-    march_min_price = filtered_month['OBJ_AMT'].min()
-    march_max_price = filtered_month['OBJ_AMT'].max()
+    min_price = filtered_month['OBJ_AMT'].min()
+    max_price = filtered_month['OBJ_AMT'].max()
 
     with col1:
-        st.metric(label = f"{sgg_nm} 최소가격(만원)", value = prettify(march_min_price))
+        st.metric(label = f"{sgg_nm} 최소가격(만원)", value = prettify(min_price))
 
     with col2:
-        st.metric(label=f"{sgg_nm} 최대가격(만원)", value = prettify(march_max_price))
+        st.metric(label=f"{sgg_nm} 최대가격(만원)", value = prettify(max_price))
 
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("### 아파트 가격 상위 3")

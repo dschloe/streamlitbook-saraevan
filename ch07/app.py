@@ -3,6 +3,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 
 from home import run_home
+from eda.eda_home import run_eda
 
 def main():
     with st.sidebar:
@@ -11,7 +12,7 @@ def main():
     if selected == "홈":
         run_home()
     elif selected == "탐색적 자료분석":
-        pass
+        run_eda()
     elif selected == "부동산 예측":
         pass
     else:
