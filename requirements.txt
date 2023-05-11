@@ -16,4 +16,5 @@ folium
 xmltodict
 streamlit-option-menu
 millify
+pingouin
 jupyterlab
