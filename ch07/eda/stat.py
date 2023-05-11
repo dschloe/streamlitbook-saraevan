@@ -23,7 +23,7 @@ def twoMeans(total_df):
                 "- 3월과 4월의 아파트 평균 가격의 차이를 검정한다. \n"
                 "- 가설설정 \n"
                 "   + 귀무가설 : $H_{0}$: 3월과 4월의 아파트 평균 차이는 없다. \n"
-                "   + 대립가설 : $H_{0}$: 3월과 4월의 아파트 평균 차이는 있다. \n")
+                "   + 대립가설 : $H_{1}$: 3월과 4월의 아파트 평균 차이는 있다. \n")
 
     march_df = apt_df[apt_df['month'] == 3]
     april_df = apt_df[apt_df['month'] == 4]
@@ -41,20 +41,16 @@ def twoMeans(total_df):
     sgg_result = ttest(sgg_march_df['OBJ_AMT'], sgg_april_df['OBJ_AMT'], paired=False)
     st.dataframe(sgg_result, use_container_width=True)
     if sgg_result['p-val'].values[0] > 0.05:
-        st.markdown(f"- 확인결과 p-value 값이 {result['p-val'].values[0]} 이므로 $H_{0}$을 채택하여, 3월과 4월의 아파트 평균 차이는 없다.")
+        st.markdown(f"- 확인결과 p-value 값이 {sgg_result['p-val'].values[0]} 이므로 $H_{0}$을 채택하여, 3월과 4월의 아파트 평균 차이는 없다.")
     else:
-        st.markdown(f"- 확인결과 p-value 값이 {result['p-val'].values[0]} 이므로 $H_{1}$을 채택하여, 3월과 4월의 아파트 평균 차이는 있다.")
+        st.markdown(f"- 확인결과 p-value 값이 {sgg_result['p-val'].values[0]} 이므로 $H_{1}$을 채택하여, 3월과 4월의 아파트 평균 차이는 있다.")
 
     st.markdown(f"### 서울시 :blue[{selected_sgg_nm}] 3월 vs 4월 시각화", unsafe_allow_html=True)
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(10, 3))
     sns.pointplot(x='month', y='OBJ_AMT', data=sgg_df)
     sns.despine()
     st.pyplot(fig)
     st.dataframe(round(sgg_df.groupby('month')['OBJ_AMT'].agg(["mean", "std", "size"]), 1), use_container_width=True)
-
-
-
-
 
 def showStat(total_df):
     total_df['DEAL_YMD'] = pd.to_datetime(total_df['DEAL_YMD'], format="%Y-%m-%d")
@@ -72,8 +68,6 @@ def showStat(total_df):
                     "- 나머지를 추가해보세요.. ")
 
         twoMeans(total_df)
-
-
 
     elif selected == '상관분석':
         st.markdown("### 상관분석 이론 설명")
