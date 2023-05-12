@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 
 import pingouin as pg
-import streamlit
 from pingouin import ttest
 
 import seaborn as sns
@@ -11,6 +10,8 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
+# 폰트 적용
+plt.rcParams['font.family'] = "Malgun Gothic"
 def twoMeans(total_df):
     total_df['month'] = total_df['DEAL_YMD'].dt.month
     apt_df = total_df[(total_df['HOUSE_TYPE'] == '아파트') & (total_df['month'].isin([3, 4]))]
@@ -52,6 +53,56 @@ def twoMeans(total_df):
     st.pyplot(fig)
     st.dataframe(round(sgg_df.groupby('month')['OBJ_AMT'].agg(["mean", "std", "size"]), 1), use_container_width=True)
 
+def corrRelation(total_df):
+    total_df['month'] = total_df['DEAL_YMD'].dt.month
+    apt_df = total_df[(total_df['HOUSE_TYPE'] == '아파트') & (total_df['month'].isin([3, 4]))]
+    st.markdown("### 상관관계 분석을 위한 데이터 확인 \n"
+                "- 건물면적과 물건금액의 상관관계를 확인해보도록 한다. \n"
+                "- 먼저 추출된 데이터를 확인한다.")
+    corr_df = apt_df[['DEAL_YMD', 'OBJ_AMT', 'BLDG_AREA', 'SGG_NM', 'month']].reset_index(drop=True)
+    st.dataframe(corr_df.head())
+
+    st.markdown("### 상관관계 분석 시각화 \n"
+                "- 상관관계 데이터 시각화를 진행한다.  \n")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.scatterplot(x='BLDG_AREA', y='OBJ_AMT', data=corr_df, ax=ax)
+    st.pyplot(fig)
+
+    st.markdown("### 상관관계 계수 및 검정 \n"
+                "- 계수를 확인한다. \n")
+    st.dataframe(pg.corr(corr_df['BLDG_AREA'], corr_df['OBJ_AMT']).round(3), use_container_width=True)
+    st.markdown("- 상관계수는 0.651 이며 건물면적이 증가할 때 마다, 물건금액도 같이 증가하는 경향성을 나타나는 것을 확인하라 수 있다. \n"
+                "그렇다면, 각 자치구별로 상관관계 시각화 및 상관계수는 어떻게 다른지 확인해본다. \n")
+    selected_sgg_nm = st.sidebar.selectbox("자치구명", sorted(corr_df['SGG_NM'].unique()))
+    selected_month = st.sidebar.selectbox("월", sorted(corr_df['month'].unique()))
+    st.markdown(f"### 서울시 {selected_sgg_nm} {selected_month}월 아파트 가격 ~ 건물면적 상관관계 분석\n"
+                "- 각 자치구 및 월별 시각화 및 상관계수를 표시할 수 있다.")
+    sgg_df = corr_df[(corr_df['SGG_NM'] == selected_sgg_nm) & (corr_df['month'] == selected_month)]
+    corr_coef = pg.corr(sgg_df['BLDG_AREA'], sgg_df['OBJ_AMT'])
+    st.dataframe(corr_coef, use_container_width=True)
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.scatterplot(x='BLDG_AREA', y='OBJ_AMT', data=sgg_df)
+    ax.text(0.95, 0.05, f'Pearson Correlation: {corr_coef["r"].values[0]:.2f}',
+               transform=ax.transAxes, ha='right', fontsize=12)
+    ax.set_title(f'{selected_sgg_nm} 피어슨 상관계수')
+    st.pyplot(fig)
+
+    st.markdown("### 거래건수 및 아파트 가격 상관관계")
+    mean_size = sgg_df.groupby('DEAL_YMD')['OBJ_AMT'].agg(["mean", "size"])
+    corr_coef_df = pg.corr(mean_size['size'], mean_size['mean'])
+    st.dataframe(corr_coef_df, use_container_width=True)
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.scatterplot(x='size', y='mean', data=mean_size)
+    ax.text(0.95, 0.05, f'Pearson Correlation: {corr_coef_df["r"].values[0]:.2f}',
+            transform=ax.transAxes, ha='right', fontsize=12)
+    ax.set_title(f'{selected_sgg_nm} 상관관계')
+    ax.set_xlabel("거래건수")
+    ax.set_ylabel("아파트 평균 가격")
+    st.pyplot(fig)
+
+
 def showStat(total_df):
     total_df['DEAL_YMD'] = pd.to_datetime(total_df['DEAL_YMD'], format="%Y-%m-%d")
     selected = st.sidebar.selectbox("분석 메뉴", ['두 집단간 차이 검정', '상관분석', '회귀분석'])
@@ -70,6 +121,11 @@ def showStat(total_df):
         twoMeans(total_df)
 
     elif selected == '상관분석':
-        st.markdown("### 상관분석 이론 설명")
+        st.markdown("### 상관분석 이론 설명 \n"
+                    "- 피어슨 상관계수... \n"
+                    "- 스피어만 상관계수... \n"
+                    "- 참고 자료등을 통해 다양하게 꾸며봅니다... ")
+        corrRelation(total_df)
+
     elif selected == "회귀분석":
         st.markdown("### 회귀분석 이론 설명")
