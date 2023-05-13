@@ -7,6 +7,7 @@ from pingouin import ttest
 
 import seaborn as sns
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 import streamlit as st
 
@@ -102,6 +103,36 @@ def corrRelation(total_df):
     ax.set_ylabel("아파트 평균 가격")
     st.pyplot(fig)
 
+def regRession(total_df):
+    total_df['month'] = total_df['DEAL_YMD'].dt.month
+    apt_df = total_df[(total_df['HOUSE_TYPE'] == '아파트') & (total_df['month'].isin([3, 4]))]
+    corr_df = apt_df[['DEAL_YMD', 'OBJ_AMT', 'BLDG_AREA', 'SGG_NM', 'month']].reset_index(drop=True)
+    selected_sgg_nm = st.sidebar.selectbox("자치구명", sorted(corr_df['SGG_NM'].unique()))
+    selected_month = st.sidebar.selectbox("월", sorted(corr_df['month'].unique()))
+    reg_df = corr_df[(corr_df['SGG_NM'] == selected_sgg_nm) & (corr_df['month'] == selected_month)]
+    st.markdown("### 데이터 확인")
+    st.dataframe(reg_df, use_container_width=True)
+
+    # 회귀식
+    st.markdown("###  건물면적과 아파트가격 회귀분석 \n"
+                "- 통계의 가정들이 맞는지 확인해보도록 한다. \n"
+                "#### 정규성 검정\n"
+                "- 먼저 시각적으로 확인한다. 잔차의 정규성을 검정한다.")
+    mod1 = pg.linear_regression(reg_df['BLDG_AREA'], reg_df['OBJ_AMT'])
+    res = mod1.residuals_
+    res = pd.DataFrame(res, columns=['Residuals'])
+    fig = px.histogram(res, x = 'Residuals')
+    st.plotly_chart(fig)
+    sw = pg.normality(res, method="shapiro")
+    st.dataframe(sw, use_container_width=True)
+    st.markdown("- 자치구명을 변경하면 통계적으로 유의하게 나온 것도 있고, 그렇지 않은 곳도 있다."
+                "- 만약, p-value가 0.05보다 매우 작으면, 잔차의 정규성은 위반되었기 때문에, 여기에서는 통상적인 회귀의 결괏값을 해석할 필요가 없다. \n"
+                "- 이런 경우, 극단적인 이상치를 제거해야 하는 과정이 필요하다. (이 부분에 대한 자세한 설명은 생략한다)")
+
+    st.markdown("#### 회귀모형 확인 \n"
+                "- 결정계수 $R^2$와 p-value를 확인한다.")
+
+    st.dataframe(mod1.round(2), use_container_width=True)
 
 def showStat(total_df):
     total_df['DEAL_YMD'] = pd.to_datetime(total_df['DEAL_YMD'], format="%Y-%m-%d")
@@ -128,4 +159,8 @@ def showStat(total_df):
         corrRelation(total_df)
 
     elif selected == "회귀분석":
-        st.markdown("### 회귀분석 이론 설명")
+        st.markdown("### 회귀분석 이론 설명\n"
+                    "- 회귀식의 가정 \n"
+                    "- 회귀식의 가설 \n"
+                    "- 추가...")
+        regRession((total_df))
