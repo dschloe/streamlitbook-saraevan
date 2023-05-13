@@ -125,7 +125,7 @@ def regRession(total_df):
     st.plotly_chart(fig)
     sw = pg.normality(res, method="shapiro")
     st.dataframe(sw, use_container_width=True)
-    st.markdown("- 자치구명을 변경하면 통계적으로 유의하게 나온 것도 있고, 그렇지 않은 곳도 있다."
+    st.markdown("- 자치구명을 변경하면 통계적으로 유의하게 나온 것도 있고, 그렇지 않은 곳도 있다. \n"
                 "- 만약, p-value가 0.05보다 매우 작으면, 잔차의 정규성은 위반되었기 때문에, 여기에서는 통상적인 회귀의 결괏값을 해석할 필요가 없다. \n"
                 "- 이런 경우, 극단적인 이상치를 제거해야 하는 과정이 필요하다. (이 부분에 대한 자세한 설명은 생략한다)")
 
@@ -133,6 +133,27 @@ def regRession(total_df):
                 "- 결정계수 $R^2$와 p-value를 확인한다.")
 
     st.dataframe(mod1.round(2), use_container_width=True)
+    intercept, slope = mod1['coef'].values[0], mod1['coef'].values[1]
+    st.write("상수: ", intercept, "기울기 :", slope)
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    x = np.linspace(0, reg_df['BLDG_AREA'].max())
+
+    sns.scatterplot(data=reg_df, x='BLDG_AREA', y='OBJ_AMT', ax=ax)
+    ax.set_title("The best-fitting regression line")
+    ax.set_xlabel("건물면적")
+    ax.set_ylabel("아파트거래가격(만원)")
+    ax.plot(x, slope * x + intercept)
+
+    if intercept < 0:
+        equation_line = f'$Y={slope:.1f}X{intercept:.1f}, R^2={np.round(mod1["adj_r2"].values[0], 3)}$'
+    else:
+        equation_line = f'$Y={slope:.1f}X+{intercept:.1f}, R^2={np.round(mod1["adj_r2"].values[0], 3)}$'
+
+    ax.text(0.95, 0.05, equation_line,
+               transform=ax.transAxes, ha='right', fontsize=12)
+    st.pyplot(fig)
+
 
 def showStat(total_df):
     total_df['DEAL_YMD'] = pd.to_datetime(total_df['DEAL_YMD'], format="%Y-%m-%d")
