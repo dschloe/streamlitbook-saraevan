@@ -17,4 +17,5 @@ xmltodict
 streamlit-option-menu
 millify
 pingouin
+pydeck
 jupyterlab
