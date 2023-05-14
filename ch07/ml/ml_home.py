@@ -4,6 +4,7 @@ import pandas as pd
 from streamlit_option_menu import option_menu
 
 from ml.houseType import predictType
+from ml.sgg_nm import predictDistrict
 
 def home():
     st.markdown("### 머신러닝 예측 개요 \n"
@@ -35,6 +36,6 @@ def run_ml(total_df):
     elif selected == '주거형태별':
         predictType(total_df)
     elif selected == '자치구역별':
-        pass
+        predictDistrict(total_df)
     else:
         st.warning("Wrong")

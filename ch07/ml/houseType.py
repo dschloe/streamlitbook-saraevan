@@ -10,20 +10,20 @@ def predict_plot(total_df, types, periods):
     for i in range(0, len(types)):
         model = Prophet()
         total_df2 = total_df.loc[total_df['HOUSE_TYPE'] == types[i], ["DEAL_YMD", "OBJ_AMT"]]
-        summary_df = total_df2.groupby('DEAL_YMD')['OBJ_AMT'].agg("mean").reset_index()
-        summary_df = summary_df.rename(columns={"DEAL_YMD": "ds", "OBJ_AMT": "y"})
-        model.fit(summary_df)
-        future1 = model.make_future_dataframe(periods=periods)
-        forecast1 = model.predict(future1)
+        result_df = total_df2.groupby('DEAL_YMD')['OBJ_AMT'].agg("mean").reset_index()
+        result_df = result_df.rename(columns={"DEAL_YMD": "ds", "OBJ_AMT": "y"})
+        model.fit(result_df)
+        future = model.make_future_dataframe(periods=periods)
+        forecast = model.predict(future)
         if i <= 1:
-            fig = model.plot(forecast1, uncertainty=True, ax=ax[0, i])
+            fig = model.plot(forecast, uncertainty=True, ax=ax[0, i])
             ax[0, i].set_title(f"서울시 {types[i]} 평균가격 예측 시나리오 {periods}일간")
             ax[0, i].set_xlabel(f"날짜")
             ax[0, i].set_ylabel(f"평균가격(만원)")
             for tick in ax[0, i].get_xticklabels():
                 tick.set_rotation(30)
         else:
-            fig = model.plot(forecast1, uncertainty=True, ax=ax[1, i-2])
+            fig = model.plot(forecast, uncertainty=True, ax=ax[1, i-2])
             ax[1, i-2].set_title(f"서울시 {types[i]} 평균가격 예측 시나리오 {periods}일간")
             ax[1, i-2].set_xlabel(f"날짜")
             ax[1, i-2].set_ylabel(f"평균가격(만원)")
