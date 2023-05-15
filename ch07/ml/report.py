@@ -5,7 +5,7 @@ import pandas as pd
 from prophet import Prophet
 import json
 from prophet.serialize import model_from_json
-from prophet.plot import plot_plotly, plot_components_plotly
+from prophet.plot import plot_plotly
 @st.cache_data
 def convert_df(df):
    return df.to_csv(index=False).encode('utf-8')
@@ -19,10 +19,10 @@ def reportMain(total_df):
     future = model.make_future_dataframe(periods=periods)
     forecast = model.predict(future)
 
-    csv = convert_df(forecast)
+    output = convert_df(forecast)
     st.sidebar.download_button(
         "결과 다운로드(CSV)",
-        csv,
+        output,
         f"{sgg_nm}_아파트 평균값 예측 {periods}일간.csv",
         "text/csv",
         key='download-csv'
@@ -43,5 +43,3 @@ def reportMain(total_df):
     )
     fig.update_yaxes(tickformat='000')
     st.plotly_chart(fig)
-    # st.plotly_chart(plot_components_plotly(model, forecast))
-

@@ -2,7 +2,6 @@
 import matplotlib.pyplot as plt
 import streamlit as st
 import pandas as pd
-from prophet import Prophet
 import json
 from prophet.serialize import model_from_json
 
@@ -22,7 +21,7 @@ def load_models(sgg_nms):
 def predictDistrict(total_df):
 
     total_df['DEAL_YMD'] = pd.to_datetime(total_df['DEAL_YMD'], format="%Y-%m-%d")
-    sgg_nms = list(total_df['SGG_NM'].unique())
+    sgg_nms = sorted(list(total_df['SGG_NM'].unique()))
     periods = int(st.number_input("향후 예측 기간을 지정하세요(1일 ~ 30일)", min_value=1, max_value=30, step=1))
 
     models = load_models(sgg_nms)
@@ -73,6 +72,7 @@ def predictDistrict(total_df):
                 tick.set_rotation(30)
         else:
             pass
+
     fig.tight_layout()
     fig.subplots_adjust(top=0.95)
     st.pyplot(fig)

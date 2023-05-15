@@ -4,7 +4,6 @@ import streamlit as st
 import pandas as pd
 from prophet import Prophet
 
-
 def predict_plot(total_df, types, periods):
     fig, ax = plt.subplots(figsize=(10, 6), sharex=True, ncols=2, nrows=2)
     for i in range(0, len(types)):

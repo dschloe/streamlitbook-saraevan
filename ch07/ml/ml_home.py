@@ -11,7 +11,9 @@ def home():
     st.markdown("### 머신러닝 예측 개요 \n"
                 "- 가구당 예측 그래프 추세 \n"
                 "- 자치구역별 예측 그래프 추세\n"
-                "- 사용된 알고리즘 소개")
+                "- 사용된 알고리즘 소개 \n"
+                "   + Facebook prophet 알고리즘 사용\n"
+                "   + 출처 : https://facebook.github.io/prophet/docs/quick_start.html")
 
 def run_ml(total_df):
     total_df['DEAL_YMD'] = pd.to_datetime(total_df['DEAL_YMD'], format="%Y-%m-%d")
