@@ -5,7 +5,7 @@ SERVICE_KEY = '564b7852646a686a34336f4f6c5571'
 
 def main():
     data = None
-    for j in range(1,12):
+    for j in range(1,20):
         url = f'http://openapi.seoul.go.kr:8088/{SERVICE_KEY}/json/tbLnOpendataRtmsV/{1+((j-1)*1000)}/{j*1000}'
         print(url)
         req = requests.get(url)
