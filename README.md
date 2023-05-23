@@ -52,6 +52,11 @@ python a.py
 streamlit run app.py
 ```
 
+## 데모페이지
+- ch08 소스코드는 그대로 실행하지 마시고, 별도로 프로젝트 폴더를 만들어서 사용하기를 바랍니다. 
+- 데모 : https://dschloe-streamlit-book-seoul-app-w9me9j.streamlit.app/
+  + 무료서버라 동접자가 많을 시, 접속이 안될 수가 있습니다. 
+
 ## 코드 에러 문의 
 - `권장방법` : 메뉴 `Issues`-`New Issues`-`메모 남기기`-`Submit new issue`
 - Sara : tkfk418@naver.com
