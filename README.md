@@ -15,7 +15,7 @@
 - 먼저 Repo를 복사 한 후, 아래와 같이 입력합니다.
 
 ```bash
-git clone repository 주소
+git clone https://github.com/dschloe/streamlitbook-saraevan.git
 ```
 
 - 폴더 최상위 경로에서 가상환경을 설치합니다. 
