@@ -71,8 +71,8 @@ streamlit run app.py
 - Evan : jhjung@dschloe.com
 
 ## 향후 업데이트 될 내용
-- PDF 교안 (9월 1일 예정)
-- 온라인 강의 (10월 1일 예정)
+- PDF 교안 (2023년 9월 1일 예정)
+- 온라인 강의 (2023년 10월 1일 예정)
 - 일정은 변경될 수 있습니다. 
 
 ## License
