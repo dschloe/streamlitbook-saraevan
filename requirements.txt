@@ -10,7 +10,6 @@ yfinance
 lightgbm
 prophet
 statsmodels
-streamlit
 geopandas
 folium
 xmltodict

@@ -1,9 +1,9 @@
 ## 교재 구매
 - 판매링크
   + 부크크 : https://www.bookk.co.kr/book/view/173250
-  + 교보문고 : TBD
-  + 예스 24 : TBD
-  + 알라딘 : TBD
+  + 교보문고 : https://product.kyobobook.co.kr/detail/S000202690179
+  + 예스 24 : https://www.yes24.com/Product/Goods/119627688
+  + 알라딘 : https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=318939281
   + 북센 : TBD
 ![](book.jpg)
 
