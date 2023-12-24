@@ -70,10 +70,12 @@ streamlit run app.py
 - Sara : tkfk418@naver.com
 - Evan : jhjung@dschloe.com
 
-## 향후 업데이트 될 내용
-- PDF 교안 (2023년 9월 1일 예정)
-- 온라인 강의 (2023년 10월 1일 예정)
-- 일정은 변경될 수 있습니다. 
+## 온라인 강의
+- Youtube : https://www.youtube.com/@darkgreenchloeJJ-pe6gq
+- Udemy : https://www.udemy.com/course/st-dashboard/?referralCode=A570882A38B5A438FB7E
+
+## 개정판 
+- TBD
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
