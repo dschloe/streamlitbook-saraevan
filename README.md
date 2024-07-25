@@ -67,7 +67,6 @@ streamlit run app.py
 
 ## 코드 에러 문의 
 - `권장방법` : 메뉴 `Issues`-`New Issues`-`메모 남기기`-`Submit new issue`
-- Sara : tkfk418@naver.com
 - Evan : jhjung@dschloe.com
 
 ## 온라인 강의
